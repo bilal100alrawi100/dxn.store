@@ -1181,6 +1181,25 @@
     history.replaceState(null, document.title, window.location.pathname + window.location.search);
   }
 
+    // ضع رابط الـ Web App الخاص بسكربت العداد هنا
+   var counterWebAppUrl = "https://script.google.com/macros/s/ضع_معرف_سكربت_العداد_هنا/exec";
+
+   function incrementVisitorCount() {
+      let currentMember = (typeof window.memberKey !== 'undefined') ? window.memberKey : 'main';
+       fetch(counterWebAppUrl + "?memberKey=" + currentMember)
+      .then(response => response.json())
+      .then(data => {
+      console.log("تم تسجيل الزيارة بنجاح. الإجمالي:", data.count);
+    })
+    .catch(err => console.error("خطأ في تسجيل الزيارة:", err));
+}
+
+// استدعاء دالة العداد عند تحميل الصفحة
+document.addEventListener("DOMContentLoaded", function() {
+  incrementVisitorCount();
+  // باقي كود DOMContentLoaded الخاص بك...
+});
+
   // 📦 مصفوفة المنتجات الـ 57 المكتملة مع روابط WebP المباشرة والفوائد الكاملة
   allProducts = [
     // 🟢 قسم: مكملات غذائية
