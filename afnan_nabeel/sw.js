@@ -1,4 +1,4 @@
-const CACHE_NAME = 'afnan-store-v2'; 
+const CACHE_NAME = 'afnan-store-v3'; 
 const assets = [
   './manifest.json', 
   '../icon-192.png', 
