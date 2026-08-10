@@ -1,9 +1,10 @@
 {
-  "name": "متجر DXN للمنتجات العضوية", 
+  "id": "/afnan_nabeel/",
+  "name": " DXN للمنتجات العضوية", 
   "short_name": "متجر منتجات DXN",
   "description": "متجر متميز لطلب المنتجات الصحية والطبيعية من DXN",
-  "start_url": "./",
-  "scope": "./",
+  "start_url": "/afnan_nabeel/",
+  "scope": "/afnan_nabeel/",
   "display": "standalone",
   "background_color": "#114232",
   "theme_color": "#114232",
