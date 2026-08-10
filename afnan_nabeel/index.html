@@ -8,7 +8,7 @@
   <script>
     // 1️⃣ معلومات العضوة أفنان
     const memberId = "830183051"; 
-    const memberName = "BLAL JAMAL JASEEM"; // 👈 ملاحظة: إذا كان اسم العضوة الرسمي مختلفاً بالإنجليزية في DXN اكتبه هنا لتحديث كرت التخفيض
+    const memberName = "BLAL JAMAL JASEEM"; // 👈 يمكنك كتابة الاسم بالإنجليزية الخاص بالعضوة هنا إذا لزم الأمر
     
     // تثبيت المعرف على الـ window مباشرة
     window.memberKey = "afnan_nabeel"; 
@@ -26,13 +26,16 @@
 
         // توجيه المتصفح للمانيفست الخاص بالعضوة لتثبيت الـ PWA بشكل صحيح باسمها
         updatedHtml = updatedHtml.replace('href="manifest.json"', 'href="afnan_nabeel/manifest.json"');
+
+        // 🌟 3. الإضافة الحاسمة: توجيه تسجيل السيرفس وركر لملف أفنان المخصص بدلاً من الرئيسي
+        updatedHtml = updatedHtml.replace(/serviceWorker\.register\(['"]\/?sw\.js/g, "serviceWorker.register('afnan_nabeel/sw.js");
         
         // عرض الصفحة كاملة بنظافة وبدون مشاكل
         document.open();
         document.write(updatedHtml);
         document.close();
         
-        // 🌟 2. إضافة الأيقونة بعد التحميل
+        // 🌟 4. إضافة الأيقونة بعد التحميل
         let favicon = document.createElement('link');
         favicon.rel = 'icon'; 
         favicon.type = 'image/jpeg'; 
