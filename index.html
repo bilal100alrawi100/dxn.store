@@ -897,14 +897,14 @@
   </style>
 
   <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-          .then(reg => console.log('تم تفعيل نظام تطبيق العضو بنجاح!', reg))
-          .catch(err => console.log('فشل تفعيل نظام تطبيق العضو:', err));
-      });
-    }
-  </script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then(reg => console.log('تم تفعيل نظام تطبيق العضو بنجاح!', reg))
+        .catch(err => console.log('فشل تفعيل نظام تطبيق العضو:', err));
+    });
+  }
+</script>
 </head>
 
 <body>
