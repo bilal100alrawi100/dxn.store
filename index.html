@@ -899,8 +899,13 @@
   <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js')
-        .then(reg => console.log('تم تفعيل نظام تطبيق العضو بنجاح!', reg))
+      // إضافة وقت عشوائي لملف sw.js لإجبار المتصفح على فحص التحديثات من GitHub دائماً
+      navigator.serviceWorker.register('/sw.js?v=' + new Date().getTime())
+        .then(reg => {
+          console.log('تم تفعيل نظام تطبيق العضو بنجاح!', reg);
+          // إجبار المتصفح على البحث عن تحديثات جديدة فور فتح الصفحة
+          reg.update();
+        })
         .catch(err => console.log('فشل تفعيل نظام تطبيق العضو:', err));
     });
   }
