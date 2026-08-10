@@ -1181,14 +1181,20 @@
 
     // 2. دالة تسجيل الزيارة بالعداد
     function incrementVisitorCount() {
-      let currentMember = (typeof window.memberKey !== 'undefined') ? window.memberKey : 'main';
-      fetch(counterWebAppUrl + "?memberKey=" + currentMember)
-        .then(response => response.json())
-        .then(data => {
-          console.log("تم تسجيل الزيارة بنجاح. الإجمالي:", data.count);
-        })
-        .catch(err => console.error("خطأ في تسجيل الزيارة:", err));
-    }
+  let currentMember = (typeof window.memberKey !== 'undefined' && window.memberKey && window.memberKey !== 'undefined') 
+                      ? window.memberKey 
+                      : 'main';
+
+  // إضافة وقت بالملي ثانية لجعل كل طلب فريداً ومنع الكاش
+  let cacheBuster = "&_t=" + new Date().getTime();
+
+  fetch(counterWebAppUrl + "?memberKey=" + currentMember + cacheBuster, { cache: 'no-store' })
+    .then(response => response.json())
+    .then(data => {
+      console.log("تم تسجيل الزيارة بنجاح. الإجمالي:", data.count);
+    })
+    .catch(err => console.error("خطأ في تسجيل الزيارة:", err));
+}
 
 
   // 📦 مصفوفة المنتجات الـ 57 المكتملة مع روابط WebP المباشرة والفوائد الكاملة
