@@ -3,6 +3,7 @@
   "short_name": "متجر منتجات DXN",
   "description": "متجر متميز لطلب المنتجات الصحية والطبيعية من DXN",
   "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#114232",
   "theme_color": "#114232",
