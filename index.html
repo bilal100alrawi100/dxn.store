@@ -1176,29 +1176,37 @@
     let cart = []; 
     let currentCategory = 'الكل'; 
 
-  window.onload = function() {
-  if (window.location.hash) {
-    history.replaceState(null, document.title, window.location.pathname + window.location.search);
-  }
+    // 1. رابط العداد المباشر
+    const counterWebAppUrl = "https://script.google.com/macros/s/AKfycbwPq5PlIvetAueCo5ugjEYIQzLeoBuQMh83n6R2R2-jrVyYt-3ooMKBOTaJWCfjdkMe/exec";
 
-    // ضع رابط الـ Web App الخاص بسكربت العداد هنا
-   var counterWebAppUrl = "https://script.google.com/macros/s/AKfycbwPq5PlIvetAueCo5ugjEYIQzLeoBuQMh83n6R2R2-jrVyYt-3ooMKBOTaJWCfjdkMe/exec";
-
-   function incrementVisitorCount() {
+    // 2. دالة تسجيل الزيارة بالعداد
+    function incrementVisitorCount() {
       let currentMember = (typeof window.memberKey !== 'undefined') ? window.memberKey : 'main';
-       fetch(counterWebAppUrl + "?memberKey=" + currentMember)
-      .then(response => response.json())
-      .then(data => {
-      console.log("تم تسجيل الزيارة بنجاح. الإجمالي:", data.count);
-    })
-    .catch(err => console.error("خطأ في تسجيل الزيارة:", err));
-}
+      fetch(counterWebAppUrl + "?memberKey=" + currentMember)
+        .then(response => response.json())
+        .then(data => {
+          console.log("تم تسجيل الزيارة بنجاح. الإجمالي:", data.count);
+        })
+        .catch(err => console.error("خطأ في تسجيل الزيارة:", err));
+    }
 
-// استدعاء دالة العداد عند تحميل الصفحة
-document.addEventListener("DOMContentLoaded", function() {
-  incrementVisitorCount();
-  // باقي كود DOMContentLoaded الخاص بك...
-});
+    // 3. تشغيل العداد وإظهار المنتجات عند فتح الصفحة
+    window.onload = function() {
+      if (window.location.hash) {
+        history.replaceState(null, document.title, window.location.pathname + window.location.search);
+      }
+
+      // تسجيل الزيارة بالخلفية
+      incrementVisitorCount();
+
+      // إخفاء عناصر الموقع الرئيسي إذا كان متجر عضو فرعي
+      if (typeof memberKey !== 'undefined' || window.memberKey) {
+        document.querySelectorAll('.main-site-only').forEach(el => el.style.display = 'none');
+      }
+
+      // إظهار المنتجات الـ 57 فوراً
+      filterCategory(currentCategory);
+    };
 
   // 📦 مصفوفة المنتجات الـ 57 المكتملة مع روابط WebP المباشرة والفوائد الكاملة
   allProducts = [
