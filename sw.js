@@ -1,6 +1,5 @@
-const CACHE_NAME = 'dxn-store-v49'; 
+const CACHE_NAME = 'dxn-store-v50'; 
 const assets = [
-  './',
   './manifest.json', 
   './icon-192.png', 
   './icon-512.png'
@@ -23,7 +22,7 @@ self.addEventListener('activate', e => {
       return Promise.all(
         cacheNames.map(cache => {
           if (cache !== CACHE_NAME) {
-            console.log('جاري حذف الكاش القديم المنتهي:', cache);
+            console.log('جاري حذف الكاش القديم:', cache);
             return caches.delete(cache); 
           }
         })
@@ -32,11 +31,30 @@ self.addEventListener('activate', e => {
   );
 });
 
-// 3. جلب البيانات (يجيب الملفات الأساسية من الكاش والباقي فريش من النت)
+// 3. جلب البيانات (الإنترنت أولاً لصفحة الموقع، والكاش للملفات الثابتة)
 self.addEventListener('fetch', e => {
-  e.respondWith(
-    caches.match(e.request).then(response => {
-      return response || fetch(e.request);
-    })
-  );
+  // إذا كان الطلب فتح صفحة الـ HTML الرئيسية للموقع
+  if (e.request.mode === 'navigate' || e.request.headers.get('accept').includes('text/html')) {
+    e.respondWith(
+      fetch(e.request)
+        .then(networkResponse => {
+          // تحديث الكاش بالنسخة الجديدة فوراً من GitHub
+          return caches.open(CACHE_NAME).then(cache => {
+            cache.put(e.request, networkResponse.clone());
+            return networkResponse;
+          });
+        })
+        .catch(() => {
+          // إذا كان المستخدم أوفلاين (بدون إنترنت)، افتح الصفحة المخزنة سابقاً
+          return caches.match(e.request);
+        })
+    );
+  } else {
+    // باقي عناصر التطبيق (الأيقونات والمانفيست) تُقرأ من الكاش لتسريع التطبيق
+    e.respondWith(
+      caches.match(e.request).then(response => {
+        return response || fetch(e.request);
+      })
+    );
+  }
 });
