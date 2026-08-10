@@ -1190,23 +1190,6 @@
         .catch(err => console.error("خطأ في تسجيل الزيارة:", err));
     }
 
-    // 3. تشغيل العداد وإظهار المنتجات عند فتح الصفحة
-    window.onload = function() {
-      if (window.location.hash) {
-        history.replaceState(null, document.title, window.location.pathname + window.location.search);
-      }
-
-      // تسجيل الزيارة بالخلفية
-      incrementVisitorCount();
-
-      // إخفاء عناصر الموقع الرئيسي إذا كان متجر عضو فرعي
-      if (typeof memberKey !== 'undefined' || window.memberKey) {
-        document.querySelectorAll('.main-site-only').forEach(el => el.style.display = 'none');
-      }
-
-      // إظهار المنتجات الـ 57 فوراً
-      filterCategory(currentCategory);
-    };
 
   // 📦 مصفوفة المنتجات الـ 57 المكتملة مع روابط WebP المباشرة والفوائد الكاملة
   allProducts = [
@@ -1677,6 +1660,24 @@
 
   renderGrid(allProducts);
 };
+
+    // 4. تشغيل العداد وإظهار المنتجات فور فتح الصفحة
+    window.onload = function() {
+      if (window.location.hash) {
+        history.replaceState(null, document.title, window.location.pathname + window.location.search);
+      }
+
+      // تسجيل الزيارة بالخلفية
+      incrementVisitorCount();
+
+      // إخفاء عناصر الموقع الرئيسي إذا كان متجر عضو فرعي
+      if (typeof memberKey !== 'undefined' || window.memberKey) {
+        document.querySelectorAll('.main-site-only').forEach(el => el.style.display = 'none');
+      }
+
+      // إظهار المنتجات الـ 57 فوراً
+      filterCategory(currentCategory);
+    };
 
     function showLoading(show) {
       document.getElementById('loading-overlay').style.display = show ? 'flex' : 'none';
