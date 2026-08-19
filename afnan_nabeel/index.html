@@ -9,9 +9,7 @@
     // 1️⃣ معلومات العضوة أفنان
     const memberId = "830183051"; 
     const memberName = "BLAL JAMAL JASEEM"; // 👈 يمكنك كتابة الاسم بالإنجليزية الخاص بالعضوة هنا إذا لزم الأمر
-    
-    // تثبيت المعرف على الـ window مباشرة
-    window.memberKey = "afnan_nabeel"; 
+    const memberKey = "afnan_nabeel"; 
 
     // 2️⃣ جلب ملفك الرئيسي مع منع التخزين المؤقت لضمان سحب أحدث التعديلات فوراً من GitHub
     fetch('../index.html?v=' + new Date().getTime(), { cache: 'no-store' })
@@ -20,6 +18,9 @@
         // الخروج برة المجلد لسحب الصور والملفات المشتركة
         let updatedHtml = html.replace('<head>', '<head><base href="../">');
         
+        // 🌟 التحسين المطلوب: حقن window.memberKey مباشرة داخل الـ HTML ليبقى ثابتاً ولا يمسحه المتصفح
+        updatedHtml = updatedHtml.replace('<head>', '<head><script>window.memberKey = "' + memberKey + '";<\/script>');
+
         // تبديل رقم العضوية والاسم الخاص ببلال إلى معلومات أفنان فوراً بكرت التخفيض
         updatedHtml = updatedHtml.replace('828119655', memberId);
         updatedHtml = updatedHtml.replace('BLAL JAMAL JASEEM', memberName);
