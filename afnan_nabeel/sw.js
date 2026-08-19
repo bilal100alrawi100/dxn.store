@@ -1,4 +1,4 @@
-const CACHE_NAME = 'afnan-store-v3'; 
+const CACHE_NAME = 'afnan-store-v4'; 
 const assets = [
   './manifest.json', 
   '../icon-192.png', 
@@ -29,7 +29,8 @@ self.addEventListener('activate', e => {
 
 // 2. جلب البيانات (استراتيجية الشبكة أولاً Network First)
 self.addEventListener('fetch', e => {
-  if (e.request.mode === 'navigate' || e.request.headers.get('accept').includes('text/html')) {
+  const acceptHeader = e.request.headers.get('accept');
+  if (e.request.mode === 'navigate' || (acceptHeader && acceptHeader.includes('text/html'))) {
     e.respondWith(
       fetch(e.request)
         .then(networkResponse => {
