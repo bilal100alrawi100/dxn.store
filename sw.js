@@ -15,14 +15,15 @@ self.addEventListener('install', e => {
   );
 });
 
-// 2. التفعيل وتنظيف أي كاش قديم
+// 2. التفعيل وتنظيف الكاش القديم الخاص بالموقع الرئيسي فقط
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(
         cacheNames.map(cache => {
-          if (cache !== CACHE_NAME) {
-            console.log('جاري حذف الكاش القديم:', cache);
+          // حماية كاش الأعضاء الآخرين مثل afnan-store من المسح
+          if (cache !== CACHE_NAME && cache.startsWith('dxn-store')) {
+            console.log('جاري حذف الكاش القديم لبلال:', cache);
             return caches.delete(cache); 
           }
         })
@@ -33,24 +34,21 @@ self.addEventListener('activate', e => {
 
 // 3. جلب البيانات (الإنترنت أولاً لصفحة الموقع، والكاش للملفات الثابتة)
 self.addEventListener('fetch', e => {
-  // إذا كان الطلب فتح صفحة الـ HTML الرئيسية للموقع
-  if (e.request.mode === 'navigate' || e.request.headers.get('accept').includes('text/html')) {
+  const acceptHeader = e.request.headers.get('accept');
+  if (e.request.mode === 'navigate' || (acceptHeader && acceptHeader.includes('text/html'))) {
     e.respondWith(
       fetch(e.request)
         .then(networkResponse => {
-          // تحديث الكاش بالنسخة الجديدة فوراً من GitHub
           return caches.open(CACHE_NAME).then(cache => {
             cache.put(e.request, networkResponse.clone());
             return networkResponse;
           });
         })
         .catch(() => {
-          // إذا كان المستخدم أوفلاين (بدون إنترنت)، افتح الصفحة المخزنة سابقاً
           return caches.match(e.request);
         })
     );
   } else {
-    // باقي عناصر التطبيق (الأيقونات والمانفيست) تُقرأ من الكاش لتسريع التطبيق
     e.respondWith(
       caches.match(e.request).then(response => {
         return response || fetch(e.request);
